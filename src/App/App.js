@@ -1,6 +1,7 @@
 import "./App.css";
 import SideMenu from "../components/SideMenu";
-import { makeStyles } from "@material-ui/core";
+import { CssBaseline, makeStyles } from "@material-ui/core";
+import Header from "../components/Header";
 
 const useStyles = makeStyles({
   appMain: {
@@ -13,7 +14,10 @@ function App() {
   return (
     <>
       <SideMenu />
-      <div className={classes.appMain}>yeess</div>
+      <div className={classes.appMain}>
+        <Header />
+      </div>
+      <CssBaseline />
     </>
   );
 }

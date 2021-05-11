@@ -14,19 +14,19 @@ import SearchIcon from "@material-ui/icons/Search";
 
 import React from "react";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: "#fff",
   },
   searchInput: {
     opacity: "0.6",
-    padding: "0 8px",
+    padding: `${theme.spacing(0)} ${theme.spacing(1)}px`,
     fontSize: ".8rem",
-    "&hover": {
+    "&:hover": {
       backgroundColor: "#f2f2f2",
     },
     "& .MuiSvgIcon-root": {
-      marginRight: "8px",
+      marginRight: theme.spacing(1),
     },
   },
   btnRoot: {
@@ -35,7 +35,7 @@ const useStyles = makeStyles({
   btnLabel: {
     background: "red",
   },
-});
+}));
 function Header() {
   const classes = useStyles();
   return (

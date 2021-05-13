@@ -3,12 +3,13 @@ import React, { useState } from "react";
 
 const useForm = (initialState) => {
   const [values, setValues] = useState(initialState);
+  const [errors, setErrors] = useState({});
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
   };
 
-  return { values, setValues, handleInputChange };
+  return { values, setValues, errors, setErrors, handleInputChange };
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -20,12 +21,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Form = (props) => {
+const Form = ({ children, ...other }) => {
   const classes = useStyles();
 
   return (
-    <form className={classes.root} autoComplete="off">
-      {props.children}
+    <form className={classes.root} autoComplete="off" {...other}>
+      {children}
     </form>
   );
 };

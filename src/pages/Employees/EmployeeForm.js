@@ -22,7 +22,7 @@ const genderItems = [
 ];
 
 const EmployeeForm = () => {
-  const { values, setValues, errors, setErrors, handleInputChange } =
+  const { values, setValues, errors, setErrors, handleInputChange, resetForm } =
     useForm(initialFValues);
 
   const validate = () => {
@@ -104,7 +104,9 @@ const EmployeeForm = () => {
           />
           <div>
             <Controls.Button type="submit">Submit</Controls.Button>
-            <Controls.Button color="default">Reset</Controls.Button>
+            <Controls.Button color="default" onClick={resetForm}>
+              Reset
+            </Controls.Button>
           </div>
         </Grid>
       </Grid>

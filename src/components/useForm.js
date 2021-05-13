@@ -8,8 +8,11 @@ const useForm = (initialState) => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
   };
-
-  return { values, setValues, errors, setErrors, handleInputChange };
+  const resetForm = () => {
+    setValues(initialState);
+    setErrors({});
+  };
+  return { values, setValues, errors, setErrors, handleInputChange, resetForm };
 };
 
 const useStyles = makeStyles((theme) => ({

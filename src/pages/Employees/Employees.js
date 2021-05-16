@@ -3,18 +3,26 @@ import PageHeader from "../../components/PageHeader";
 import EmployeeForm from "./EmployeeForm";
 import PeopleOutlineTwoToneIcon from "@material-ui/icons/PeopleOutlineTwoTone";
 import {
+  InputAdornment,
   makeStyles,
   Paper,
   TableBody,
   TableCell,
   TableRow,
+  Toolbar,
 } from "@material-ui/core";
 import useTable from "../../components/useTable";
 import * as EmployeeService from "../../services/employeeService";
+import Controls from "../../components/controls/Controls";
+import { Search } from "@material-ui/icons";
+
 const useStyles = makeStyles((theme) => ({
   pageContent: {
     margin: theme.spacing(5),
     padding: theme.spacing(3),
+  },
+  searchInput: {
+    width: "75%",
   },
 }));
 
@@ -28,8 +36,26 @@ const headCells = [
 const Employees = () => {
   const classes = useStyles();
   const [records, setRecords] = useState(EmployeeService.getAllEmployees);
+  const [filterFN, setFilterFN] = useState({
+    fn: (items) => {
+      return items;
+    },
+  });
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTable(records, headCells);
+    useTable(records, headCells, filterFN);
+
+  const handleSearch = (e) => {
+    let target = e.target;
+    setFilterFN({
+      fn: (items) => {
+        if (target.value == "") return items;
+        else
+          return items.filter((x) =>
+            x.fullName.toLowerCase().includes(target.value.toLowerCase())
+          );
+      },
+    });
+  };
   return (
     <>
       <PageHeader
@@ -38,7 +64,21 @@ const Employees = () => {
         icon={<PeopleOutlineTwoToneIcon fontSize="large" />}
       />
       <Paper className={classes.pageContent}>
-        <EmployeeForm />
+        {/* <EmployeeForm /> */}
+        <Toolbar>
+          <Controls.Input
+            label="Search Employees"
+            className={classes.searchInput}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              ),
+            }}
+            onChange={handleSearch}
+          />
+        </Toolbar>
         <TblContainer>
           <TblHead />
           <TableBody>

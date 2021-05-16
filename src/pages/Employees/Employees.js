@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 const headCells = [
   { id: "fullName", label: "Employee Name" },
   { id: "email", label: "Email Address (Personal)" },
-  { id: "mobile", label: "Mobile Number" },
+  { id: "mobile", label: "Mobile Number", disableSorting: true },
   { id: "department", label: "Department" },
 ];
 

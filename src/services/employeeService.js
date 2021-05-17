@@ -1,3 +1,5 @@
+import Employees from "../pages/Employees/Employees";
+
 const KEYS = {
   employees: "employees",
   employeeId: "employeeId",
@@ -13,6 +15,12 @@ export const insertEmployee = (data) => {
   let employees = getAllEmployees();
   data["id"] = generateEmployeeId();
   employees.push(data);
+  localStorage.setItem(KEYS.employees, JSON.stringify(employees));
+};
+export const updateEmployee = (data) => {
+  let employees = getAllEmployees();
+  let recordIndex = employees.findIndex((x) => x.id == data.id);
+  employees[recordIndex] = { ...data };
   localStorage.setItem(KEYS.employees, JSON.stringify(employees));
 };
 export const generateEmployeeId = () => {

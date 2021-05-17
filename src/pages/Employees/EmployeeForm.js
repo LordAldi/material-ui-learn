@@ -1,5 +1,5 @@
 import { Grid } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import Controls from "../../components/controls/Controls";
 import { useForm, Form } from "../../components/useForm";
 import * as employeeService from "../../services/employeeService";
@@ -21,7 +21,7 @@ const genderItems = [
   { id: "other", title: "Other" },
 ];
 
-const EmployeeForm = ({ addOrEdit }) => {
+const EmployeeForm = ({ addOrEdit, recordForEdit }) => {
   const validate = (fieldValues = values) => {
     let temp = { ...errors };
     if ("fullName" in fieldValues)
@@ -51,6 +51,11 @@ const EmployeeForm = ({ addOrEdit }) => {
       addOrEdit(values, resetForm);
     }
   };
+
+  useEffect(() => {
+    if (recordForEdit != null) setValues({ ...recordForEdit });
+  }, [recordForEdit]);
+
   return (
     <Form onSubmit={handleSubmit}>
       <Grid container>

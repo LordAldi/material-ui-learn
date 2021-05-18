@@ -17,6 +17,7 @@ import Controls from "../../components/controls/Controls";
 import { Add, Close, EditOutlined, Search } from "@material-ui/icons";
 import Popup from "../../components/Popup";
 import Notification from "../../components/Notification";
+import ConfirmDialog from "../../components/ConfirmDialog";
 const useStyles = makeStyles((theme) => ({
   pageContent: {
     margin: theme.spacing(5),
@@ -54,6 +55,11 @@ const Employees = () => {
     message: "",
     type: "",
   });
+  const [confirmDialog, setConfirmDialog] = useState({
+    isOpen: false,
+    title: "",
+    subtitle: "",
+  });
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTable(records, headCells, filterFN);
 
@@ -86,6 +92,19 @@ const Employees = () => {
   const openInPopup = (employee) => {
     setRecordForEdit(employee);
     setOpenPopup(true);
+  };
+  const onDelete = (id) => {
+    setConfirmDialog({
+      ...confirmDialog,
+      isOpen: false,
+    });
+    EmployeeService.deleteEmployee(id);
+    setRecords(EmployeeService.getAllEmployees());
+    setNotify({
+      isOpen: true,
+      message: "Deleted Successfully",
+      type: "error",
+    });
   };
   return (
     <>
@@ -130,15 +149,27 @@ const Employees = () => {
                 <TableCell>{item.mobile}</TableCell>
                 <TableCell>{item.department}</TableCell>
                 <TableCell>
-                  <Controls.ActionButton color="primary">
-                    <EditOutlined
-                      fontSize="small"
-                      onClick={() => {
-                        openInPopup(item);
-                      }}
-                    />
+                  <Controls.ActionButton
+                    color="primary"
+                    onClick={() => {
+                      openInPopup(item);
+                    }}
+                  >
+                    <EditOutlined fontSize="small" />
                   </Controls.ActionButton>
-                  <Controls.ActionButton color="secondary">
+                  <Controls.ActionButton
+                    color="secondary"
+                    onClick={() => {
+                      setConfirmDialog({
+                        isOpen: true,
+                        title: "Are you sure to delete this record?",
+                        subtitle: "You can't undo this operation",
+                        onConfirm: () => {
+                          onDelete(item.id);
+                        },
+                      });
+                    }}
+                  >
                     <Close fontSize="small" />
                   </Controls.ActionButton>
                 </TableCell>
@@ -157,6 +188,10 @@ const Employees = () => {
         <EmployeeForm addOrEdit={addOrEdit} recordForEdit={recordForEdit} />
       </Popup>
       <Notification notify={notify} setNotify={setNotify} />
+      <ConfirmDialog
+        confirmDialog={confirmDialog}
+        setConfirmDialog={setConfirmDialog}
+      />
     </>
   );
 };

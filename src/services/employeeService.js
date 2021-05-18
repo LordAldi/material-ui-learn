@@ -1,5 +1,3 @@
-import Employees from "../pages/Employees/Employees";
-
 const KEYS = {
   employees: "employees",
   employeeId: "employeeId",
@@ -19,12 +17,12 @@ export const insertEmployee = (data) => {
 };
 export const updateEmployee = (data) => {
   let employees = getAllEmployees();
-  let recordIndex = employees.findIndex((x) => x.id == data.id);
+  let recordIndex = employees.findIndex((x) => x.id === data.id);
   employees[recordIndex] = { ...data };
   localStorage.setItem(KEYS.employees, JSON.stringify(employees));
 };
 export const generateEmployeeId = () => {
-  if (localStorage.getItem(KEYS.employeeId) == null)
+  if (localStorage.getItem(KEYS.employeeId) === null)
     localStorage.setItem(KEYS.employeeId, "0");
 
   var id = parseInt(localStorage.getItem(KEYS.employeeId));
@@ -32,7 +30,7 @@ export const generateEmployeeId = () => {
   return id;
 };
 export const getAllEmployees = () => {
-  if (localStorage.getItem(KEYS.employees) == null)
+  if (localStorage.getItem(KEYS.employees) === null)
     localStorage.setItem(KEYS.employees, JSON.stringify([]));
   let employees = JSON.parse(localStorage.getItem(KEYS.employees));
   let departments = getDepartmentCollection();

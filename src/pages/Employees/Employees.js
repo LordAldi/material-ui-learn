@@ -16,7 +16,7 @@ import * as EmployeeService from "../../services/employeeService";
 import Controls from "../../components/controls/Controls";
 import { Add, Close, EditOutlined, Search } from "@material-ui/icons";
 import Popup from "../../components/Popup";
-
+import Notification from "../../components/Notification";
 const useStyles = makeStyles((theme) => ({
   pageContent: {
     margin: theme.spacing(5),
@@ -49,6 +49,11 @@ const Employees = () => {
     },
   });
   const [openPopup, setOpenPopup] = useState(false);
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTable(records, headCells, filterFN);
 
@@ -56,7 +61,7 @@ const Employees = () => {
     let target = e.target;
     setFilterFN({
       fn: (items) => {
-        if (target.value == "") return items;
+        if (target.value === "") return items;
         else
           return items.filter((x) =>
             x.fullName.toLowerCase().includes(target.value.toLowerCase())
@@ -64,14 +69,18 @@ const Employees = () => {
       },
     });
   };
-
   const addOrEdit = (employee, resetForm) => {
-    if (employee.id == 0) EmployeeService.insertEmployee(employee);
+    if (employee.id === 0) EmployeeService.insertEmployee(employee);
     else EmployeeService.updateEmployee(employee);
     resetForm();
     setRecordForEdit(null);
     setOpenPopup(false);
     setRecords(EmployeeService.getAllEmployees());
+    setNotify({
+      isOpen: true,
+      message: "Submitted Successfully",
+      type: "success",
+    });
   };
 
   const openInPopup = (employee) => {
@@ -147,6 +156,7 @@ const Employees = () => {
       >
         <EmployeeForm addOrEdit={addOrEdit} recordForEdit={recordForEdit} />
       </Popup>
+      <Notification notify={notify} setNotify={setNotify} />
     </>
   );
 };
